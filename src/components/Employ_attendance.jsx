@@ -1,16 +1,11 @@
 import "../App.css";
-
 import React, { useEffect, useState } from "react";
-
 import { useNavigate, Link } from "react-router-dom";
-
 
 // =====================================================
 // DJANGO BACKEND URL
 // =====================================================
-
 const API_URL = "https://backend-z4sf.onrender.com";
-
 
 // =====================================================
 // EMPLOYEE ATTENDANCE COMPONENT
@@ -18,804 +13,629 @@ const API_URL = "https://backend-z4sf.onrender.com";
 
 const Employ_attendance = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [attendance, setAttendance] = useState([]);
+  const [attendance, setAttendance] = useState([]);
 
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-    const [error, setError] = useState("");
+  const [error, setError] = useState("");
 
-    const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
+    EmployId: "",
+    Date: "",
+    Status: ""
+  });
+
+  // ================= GET ATTENDANCE =================
+
+  const getAttendance = async () => {
+
+    try {
+
+      setLoading(true);
+
+      const response = await fetch(
+        `${API_URL}/Employ_attendance/`,
+        {
+          method: "GET",
+
+          headers: {
+            "Accept": "application/json"
+          }
+        }
+      );
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Failed to fetch attendance"
+        );
+
+      }
+
+      const data = await response.json();
+
+      console.log(
+        "Attendance from Django:",
+        data
+      );
+
+      setAttendance(data);
+
+    } catch (error) {
+
+      console.log(error);
+
+      setError(
+        "Failed to load attendance"
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+  useEffect(() => {
+
+    getAttendance();
+
+  }, []);
+
+  // ================= INPUT CHANGE =================
+
+  const handleChange = (e) => {
+
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+
+  };
+
+  // ================= SAVE ATTENDANCE =================
+
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  setError("");
+
+  console.log("Sending attendance data:", formData);
+
+  try {
+    const response = await fetch(
+      `${API_URL}/Employ_attendance/`,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/x-www-form-urlencoded",
+          "Accept": "application/json"
+        },
+
+        body: new URLSearchParams(formData)
+      }
+    );
+
+    console.log("Response status:", response.status);
+
+    const responseText = await response.text();
+
+    console.log("Backend response:", responseText);
+
+    if (response.ok) {
+
+      alert("Attendance Saved Successfully");
+
+      setFormData({
         EmployId: "",
         Date: "",
         Status: ""
+      });
+
+      getAttendance();
+
+    } else {
+
+      alert(
+        `Attendance Save Failed\n\nStatus: ${response.status}\n\n${responseText}`
+      );
+    }
+
+  } catch (error) {
+
+    console.error("Attendance Error:", error);
+
+    alert(
+      `Backend connection error\n\n${error.message}`
+    );
+  }
+};
+
+  // ================= RESET =================
+
+  const handleReset = () => {
+
+    setFormData({
+      EmployId: "",
+      Date: "",
+      Status: ""
     });
 
+    setError("");
 
-    // =====================================================
-    // GET ATTENDANCE
-    // =====================================================
+  };
 
-    const getAttendance = async () => {
+  // ================= EDIT =================
 
-        try {
+  const handleEdit = (item) => {
 
-            setLoading(true);
+    navigate(`/edit-attendance/${item.id}`, {
+      state: {
+        attendance: item
+      }
+    });
 
-            const response = await fetch(
-                `${API_URL}/Employ_attendance/`,
-                {
-                    method: "GET",
+  };
 
-                    headers: {
-                        "Accept": "application/json"
-                    }
-                }
-            );
+  // ================= DELETE =================
 
+  const handleDelete = async (id) => {
 
-            if (!response.ok) {
+    const confirmDelete =
+      window.confirm(
+        "Are you sure you want to delete this attendance?"
+      );
 
-                throw new Error(
-                    "Failed to fetch attendance"
-                );
+    if (!confirmDelete) {
 
-            }
+      return;
 
+    }
 
-            const data = await response.json();
+    try {
 
-            console.log(
-                "Attendance from Django:",
-                data
-            );
+      const response = await fetch(
+        `${API_URL}/Delete_attendance/${id}/`,
+        {
+          method: "DELETE",
 
-            setAttendance(data);
-
-        } catch (error) {
-
-            console.log(error);
-
-            setError(
-                "Failed to load attendance"
-            );
-
-        } finally {
-
-            setLoading(false);
-
+          headers: {
+            "Accept":
+              "application/json"
+          }
         }
+      );
 
-    };
+      if (response.ok) {
 
-
-    useEffect(() => {
+        alert(
+          "Attendance Deleted Successfully"
+        );
 
         getAttendance();
 
-    }, []);
+      } else {
 
-
-    // =====================================================
-    // INPUT CHANGE
-    // =====================================================
-
-    const handleChange = (e) => {
-
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-
-    };
-
-
-    // =====================================================
-    // SAVE ATTENDANCE
-    // =====================================================
-
-    const handleSubmit = async (e) => {
-
-        e.preventDefault();
-
-        setError("");
-
-        console.log(
-            "Sending attendance data:",
-            formData
-        );
-
+        let data = {};
 
         try {
 
-            const response = await fetch(
-                `${API_URL}/Employ_attendance/`,
-                {
-                    method: "POST",
+          data = await response.json();
 
-                    headers: {
-                        "Content-Type":
-                            "application/x-www-form-urlencoded",
+        } catch {
 
-                        "Accept":
-                            "application/json"
-                    },
-
-                    body: new URLSearchParams(formData)
-                }
-            );
-
-
-            console.log(
-                "Response status:",
-                response.status
-            );
-
-
-            const responseText =
-                await response.text();
-
-
-            console.log(
-                "Backend response:",
-                responseText
-            );
-
-
-            if (response.ok) {
-
-                alert(
-                    "Attendance Saved Successfully"
-                );
-
-
-                setFormData({
-                    EmployId: "",
-                    Date: "",
-                    Status: ""
-                });
-
-
-                getAttendance();
-
-            } else {
-
-                alert(
-                    `Attendance Save Failed
-
-Status: ${response.status}
-
-${responseText}`
-                );
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Attendance Error:",
-                error
-            );
-
-
-            alert(
-                `Backend connection error
-
-${error.message}`
-            );
+          // Response JSON nahi hai
 
         }
 
-    };
-
-
-    // =====================================================
-    // RESET
-    // =====================================================
-
-    const handleReset = () => {
-
-        setFormData({
-            EmployId: "",
-            Date: "",
-            Status: ""
-        });
-
-        setError("");
-
-    };
-
-
-    // =====================================================
-    // EDIT
-    // =====================================================
-
-    const handleEdit = (item) => {
-
-        navigate(
-            `/edit-attendance/${item.id}`,
-            {
-                state: {
-                    attendance: item
-                }
-            }
+        alert(
+          data.error ||
+          "Delete Failed"
         );
 
-    };
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert(
+        "Backend connection error"
+      );
+
+    }
+
+  };
 
 
-    // =====================================================
-    // DELETE
-    // =====================================================
 
-    const handleDelete = async (id) => {
+  return (
+    <>
 
-        const confirmDelete =
-            window.confirm(
-                "Are you sure you want to delete this attendance?"
-            );
+      {/* =====================================================
+          NAVBAR
+      ====================================================== */}
+<div className="all">
+      <nav className="navbar navbar-expand-sm">
 
+        <div className="container-fluid">
 
-        if (!confirmDelete) {
+          <Link
+            className="navbar-brand fontnav px-2 px-md-3 cl1"
+            to="/"
+          >
+            Employ Management System
+          </Link>
 
-            return;
+          <button
+                  className="navbar-toggler"
+                  style={{
+                    backgroundColor: "#018c8c90",
+                    color: "#FFFFFF"
+                  }}
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapsibleNavbar"
+          >
 
-        }
+            <span className="navbar-toggler-icon"></span>
 
+          </button>
 
-        try {
+          <div
+            className="collapse navbar-collapse"
+            id="collapsibleNavbar"
+          >
 
-            const response = await fetch(
-                `${API_URL}/Delete_attendance/${id}/`,
-                {
-                    method: "DELETE",
+            <ul className="navbar-nav ms-auto">
 
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    }
-                }
-            );
+              {/* Employ List */}
 
+              <li className="nav-item">
 
-            if (response.ok) {
+                <Link
+                  className="nav-link px-2 px-md-3 cl1"
+                  to="/"
+                >
+                  Employ List
+                </Link>
 
-                alert(
-                    "Attendance Deleted Successfully"
-                );
+              </li>
 
-                getAttendance();
+              {/* Employ Attendance */}
 
-            } else {
+              <li className="nav-item">
 
-                let data = {};
+                <Link
+                  className="nav-link px-2 px-md-3 cl1"
+                  to="/attendance"
+                >
+                  Employ Attendance
+                </Link>
 
-                try {
+              </li>
 
-                    data =
-                        await response.json();
+              {/* Employ Salary */}
 
-                } catch {
+              <li className="nav-item">
 
-                    // Response JSON nahi hai
+                <Link
+                  className="nav-link px-2 px-md-3 cl1"
+                  to="/salary"
+                >
+                  Employ Sallery Count
+                </Link>
 
-                }
+              </li>
 
+            </ul>
 
-                alert(
-                    data.error ||
-                    "Delete Failed"
-                );
+          </div>
 
-            }
+        </div>
 
-        } catch (error) {
+      </nav>
+</div>
+      {/* =====================================================
+          MAIN CONTAINER
+      ====================================================== */}
 
-            console.log(error);
+      <div className="container alltext">
 
-            alert(
-                "Backend connection error"
-            );
+        <div className="col-md-12 text-dark mt-5">
 
-        }
+          <h1 className="text-center">
+            Employee Attendance
+          </h1>
 
-    };
+        </div>
 
+        {/* ================= ATTENDANCE FORM ================= */}
 
-    // =====================================================
-    // HTML / JSX
-    // =====================================================
+        <div className="card mt-5">
 
-    return (
+          <div className="card-body">
 
-        <>
+            <form onSubmit={handleSubmit}>
 
+              <div className="container mt-4">
 
-            {/* =====================================================
-                NAVBAR
-            ====================================================== */}
+                <div className="card shadow">
 
-            <div className="all">
+                  <div className="card-body">
 
-                <nav className="navbar navbar-expand-sm">
+                    <div className="row">
 
-                    <div className="container-fluid">
+                      {/* EMPLOYEE ID */}
 
+                      <div className="col-md-6 mb-3">
 
-                        <Link
-                            className="navbar-brand fontnav px-2 px-md-3 cl1"
-                            to="/"
+                        <label className="form-label">
+                          Employee ID
+                        </label>
+
+                        <input
+                          type="number"
+                          name="EmployId"
+                          className="form-control"
+                          placeholder="Enter Employee ID"
+                          value={formData.EmployId}
+                          onChange={handleChange}
+                          required
+                        />
+
+                      </div>
+
+                      {/* DATE */}
+
+                      <div className="col-md-6 mb-3">
+
+                        <label className="form-label">
+                          Attendance Date
+                        </label>
+
+                        <input
+                          type="date"
+                          name="Date"
+                          className="form-control"
+                          value={formData.Date}
+                          onChange={handleChange}
+                          required
+                        />
+
+                      </div>
+
+                      {/* STATUS */}
+
+                      <div className="col-md-6 mb-3">
+
+                        <label className="form-label">
+                          Attendance Status
+                        </label>
+
+                        <select
+                          name="Status"
+                          className="form-select"
+                          value={formData.Status}
+                          onChange={handleChange}
+                          required
                         >
-                            Employ Management System
-                        </Link>
 
+                          <option value="">
+                            Select Status
+                          </option>
 
-                        <button
-                            className="navbar-toggler"
-                            style={{
-                                backgroundColor: "#018c8c90",
-                                color: "#FFFFFF"
-                            }}
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapsibleNavbar"
-                        >
+                          <option value="Present">
+                            Present
+                          </option>
 
-                            <span className="navbar-toggler-icon"></span>
+                          <option value="Absent">
+                            Absent
+                          </option>
 
-                        </button>
+                          <option value="Half Day">
+                            Half Day
+                          </option>
 
+                        </select>
 
-                        <div
-                            className="collapse navbar-collapse"
-                            id="collapsibleNavbar"
-                        >
-
-                            <ul className="navbar-nav ms-auto">
-
-
-                                {/* Employ List */}
-
-                                <li className="nav-item">
-
-                                    <Link
-                                        className="nav-link px-2 px-md-3 cl1"
-                                        to="/"
-                                    >
-                                        Employ List
-                                    </Link>
-
-                                </li>
-
-
-                                {/* Employ Attendance */}
-
-                                <li className="nav-item">
-
-                                    <Link
-                                        className="nav-link px-2 px-md-3 cl1"
-                                        to="/attendance"
-                                    >
-                                        Employ Attendance
-                                    </Link>
-
-                                </li>
-
-
-                                {/* Employ Salary */}
-
-                                <li className="nav-item">
-
-                                    <Link
-                                        className="nav-link px-2 px-md-3 cl1"
-                                        to="/salary"
-                                    >
-                                        Employ Sallery Count
-                                    </Link>
-
-                                </li>
-
-
-                            </ul>
-
-                        </div>
+                      </div>
 
                     </div>
 
-                </nav>
+                  </div>
+
+                  {/* ================= FOOTER BUTTONS ================= */}
+
+                  <div className="card-footer text-center">
+
+                    <button
+                      type="submit"
+                      className="btn btn-save me-2"
+                    >
+                      Save Attendance
+                    </button>
+
+                    <button
+                      type="button"
+                      className="btn btn-reset"
+                      onClick={handleReset}
+                    >
+                      Reset
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+        {/* ================= ERROR ================= */}
+
+        {error && (
+
+          <div className="alert alert-danger mt-3 text-center">
+
+            {error}
+
+          </div>
+
+        )}
+
+        {/* ================= ATTENDANCE LIST ================= */}
+
+        <div className="card mt-4">
+
+          <div className="card-header">
+
+            <h4>
+              Attendance List
+            </h4>
+
+          </div>
+
+          <div className="card-body">
+
+            <div className="attendance-table-box">
+
+             <table className="table table-bordered table-striped attendance-table">
+
+                <thead>
+
+                  <tr className="table-dark">
+
+                    <th>ID</th>
+
+                    <th>
+                      Employee Name
+                    </th>
+
+                    <th>
+                      Date
+                    </th>
+
+                    <th>
+                      Status
+                    </th>
+
+                    <th>
+                      Edit
+                    </th>
+
+                    <th>
+                      Delete
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  {attendance.length === 0 ? (
+
+                    <tr>
+
+
+
+                    </tr>
+
+                  ) : (
+
+                    attendance.map((i) => (
+
+                      <tr key={i.id}>
+
+                        <td>
+                          {i.EmployId}
+                        </td>
+
+                        <td>
+
+                          <div className="cell-scroll">
+                            {i.Employname}
+                          </div>
+
+                        </td>
+
+                        <td>
+
+                          <div className="cell-scroll">
+                            {i.Date ? i.Date.split("-").reverse().join("-") : ""}
+                          </div>
+
+                        </td>
+
+                        <td>
+
+                          <div className="cell-scroll">
+                            {i.Status}
+                          </div>
+
+                        </td>
+
+                        {/* EDIT */}
+
+                        <td className="text-center manage-btn">
+
+                          <button
+                            className="btn btn-edit btn-sm"
+                            onClick={() =>
+                              handleEdit(i)
+                            }
+                          >
+                            Edit
+                          </button>
+
+                        </td>
+
+                        {/* DELETE */}
+
+                        <td className="text-center manage-btn">
+
+                          <button
+                            className="btn btn-delete btn-sm"
+                            onClick={() =>
+                              handleDelete(i.id)
+                            }
+                          >
+                            Delete
+                          </button>
+
+                        </td>
+
+                      </tr>
+
+                    ))
+
+                  )}
+
+                </tbody>
+
+              </table>
 
             </div>
 
+          </div>
 
-            {/* =====================================================
-                MAIN CONTAINER
-            ====================================================== */}
+        </div>
 
-            <div className="container alltext">
+      </div>
 
-
-                <div className="col-md-12 text-dark mt-5">
-
-                    <h1 className="text-center">
-                        Employee Attendance
-                    </h1>
-
-                </div>
-
-
-                {/* =====================================================
-                    ATTENDANCE FORM
-                ====================================================== */}
-
-                <div className="card mt-5">
-
-                    <div className="card-body">
-
-                        <form onSubmit={handleSubmit}>
-
-                            <div className="container mt-4">
-
-                                <div className="card shadow">
-
-                                    <div className="card-body">
-
-                                        <div className="row">
-
-
-                                            {/* EMPLOYEE ID */}
-
-                                            <div className="col-md-6 mb-3">
-
-                                                <label className="form-label">
-                                                    Employee ID
-                                                </label>
-
-                                                <input
-                                                    type="number"
-                                                    name="EmployId"
-                                                    className="form-control"
-                                                    placeholder="Enter Employee ID"
-                                                    value={formData.EmployId}
-                                                    onChange={handleChange}
-                                                    required
-                                                />
-
-                                            </div>
-
-
-                                            {/* DATE */}
-
-                                            <div className="col-md-6 mb-3">
-
-                                                <label className="form-label">
-                                                    Attendance Date
-                                                </label>
-
-                                                <input
-                                                    type="date"
-                                                    name="Date"
-                                                    className="form-control"
-                                                    value={formData.Date}
-                                                    onChange={handleChange}
-                                                    required
-                                                />
-
-                                            </div>
-
-
-                                            {/* STATUS */}
-
-                                            <div className="col-md-6 mb-3">
-
-                                                <label className="form-label">
-                                                    Attendance Status
-                                                </label>
-
-                                                <select
-                                                    name="Status"
-                                                    className="form-select"
-                                                    value={formData.Status}
-                                                    onChange={handleChange}
-                                                    required
-                                                >
-
-                                                    <option value="">
-                                                        Select Status
-                                                    </option>
-
-                                                    <option value="Present">
-                                                        Present
-                                                    </option>
-
-                                                    <option value="Absent">
-                                                        Absent
-                                                    </option>
-
-                                                    <option value="Half Day">
-                                                        Half Day
-                                                    </option>
-
-                                                </select>
-
-                                            </div>
-
-
-                                        </div>
-
-                                    </div>
-
-
-                                    {/* FOOTER BUTTONS */}
-
-                                    <div className="card-footer text-center">
-
-                                        <button
-                                            type="submit"
-                                            className="btn btn-save me-2"
-                                        >
-                                            Save Attendance
-                                        </button>
-
-
-                                        <button
-                                            type="button"
-                                            className="btn btn-reset"
-                                            onClick={handleReset}
-                                        >
-                                            Reset
-                                        </button>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </form>
-
-                    </div>
-
-                </div>
-
-
-                {/* =====================================================
-                    ERROR
-                ====================================================== */}
-
-                {error && (
-
-                    <div className="alert alert-danger mt-3 text-center">
-
-                        {error}
-
-                    </div>
-
-                )}
-
-
-                {/* =====================================================
-                    ATTENDANCE LIST
-                ====================================================== */}
-
-                <div className="card mt-4">
-
-                    <div className="card-header">
-
-                        <h4>
-                            Attendance List
-                        </h4>
-
-                    </div>
-
-
-                    <div className="card-body">
-
-                        {/* IMPORTANT:
-                            Is box ko horizontal scroll nahi diya gaya.
-                            Sirf Employee Name scroll hoga.
-                        */}
-
-                        <div className="attendance-table-box">
-
-                            <table className="table table-bordered table-striped attendance-table">
-
-
-                                {/* =====================================================
-                                    TABLE HEADER
-                                ====================================================== */}
-
-                                <thead>
-
-                                    <tr className="table-dark">
-
-                                        <th>
-                                            ID
-                                        </th>
-
-
-                                        <th>
-                                            Employee Name
-                                        </th>
-
-
-                                        <th>
-                                            Date
-                                        </th>
-
-
-                                        <th>
-                                            Status
-                                        </th>
-
-
-                                        <th>
-                                            Edit
-                                        </th>
-
-
-                                        <th>
-                                            Delete
-                                        </th>
-
-                                    </tr>
-
-                                </thead>
-
-
-                                {/* =====================================================
-                                    TABLE BODY
-                                ====================================================== */}
-
-                                <tbody>
-
-
-                                    {attendance.length === 0 ? (
-
-                                        <tr>
-
-                                            <td
-                                                colSpan="6"
-                                                className="text-center"
-                                            >
-                                                No Attendance Found
-                                            </td>
-
-                                        </tr>
-
-                                    ) : (
-
-                                        attendance.map((i) => (
-
-                                            <tr key={i.id}>
-
-
-                                                {/* =====================================================
-                                                    ID
-                                                ====================================================== */}
-
-                                                <td>
-
-                                                    {i.EmployId}
-
-                                                </td>
-
-
-                                                {/* =====================================================
-                                                    EMPLOYEE NAME
-
-                                                    IMPORTANT:
-                                                    Sirf isi div ke andar horizontal scroll hoga.
-                                                ====================================================== */}
-
-                                                <td className="employee-name-column">
-
-                                                    <div className="cell-scroll employee-name-scroll">
-
-                                                        {i.Employname}
-
-                                                    </div>
-
-                                                </td>
-
-
-                                                {/* =====================================================
-                                                    DATE
-                                                ====================================================== */}
-
-                                                <td>
-
-                                                    <div className="cell-scroll date-scroll">
-
-                                                        {i.Date
-                                                            ? i.Date
-                                                                .split("-")
-                                                                .reverse()
-                                                                .join("-")
-                                                            : ""
-                                                        }
-
-                                                    </div>
-
-                                                </td>
-
-
-                                                {/* =====================================================
-                                                    STATUS
-                                                ====================================================== */}
-
-                                                <td>
-
-                                                    <div className="cell-scroll status-scroll">
-
-                                                        {i.Status}
-
-                                                    </div>
-
-                                                </td>
-
-
-                                                {/* =====================================================
-                                                    EDIT
-                                                ====================================================== */}
-
-                                                <td className="text-center manage-btn">
-
-                                                    <button
-                                                        className="btn btn-edit btn-sm"
-                                                        onClick={() =>
-                                                            handleEdit(i)
-                                                        }
-                                                    >
-                                                        Edit
-                                                    </button>
-
-                                                </td>
-
-
-                                                {/* =====================================================
-                                                    DELETE
-                                                ====================================================== */}
-
-                                                <td className="text-center manage-btn">
-
-                                                    <button
-                                                        className="btn btn-delete btn-sm"
-                                                        onClick={() =>
-                                                            handleDelete(i.id)
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </button>
-
-                                                </td>
-
-
-                                            </tr>
-
-                                        ))
-
-                                    )}
-
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </>
-
-    );
+    </>
+  );
 
 };
-
 
 export default Employ_attendance;

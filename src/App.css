@@ -1,280 +1,309 @@
-
+/* =====================================================
+   GLOBAL
+===================================================== */
 
 .all {
-  background-color: #1F2937;
-  font-family: "Edu VIC WA NT Hand", cursive;
-  font-size: 15px;
-  font-weight: 400;
-  font-style: normal;
+    background-color: #1F2937;
+    font-family: "Edu VIC WA NT Hand", cursive;
+    font-size: 15px;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .fontnav {
-  font-family: "Edu VIC WA NT Hand", cursive;
-  font-size: 15px;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Edu VIC WA NT Hand", cursive;
+    font-size: 15px;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .cl1 {
-  color: white;
+    color: white;
 }
 
 .cl1:hover {
-  color: #38BDF8;
+    color: #38BDF8;
+}
+
+body {
+    background: #f5f5f5;
 }
 
 
-
+/* =====================================================
+   ADD BUTTON
+===================================================== */
 
 .add {
-  background-color: #22C55E;
-  color: #FFFFFF;
-  font-family: "Noto Serif", serif;
-  height: 40px;
-  width: 150px;
-  margin-top: 10px;
+    background-color: #22C55E;
+    color: #FFFFFF;
+    font-family: "Noto Serif", serif;
+    height: 40px;
+    width: 150px;
+    margin-top: 10px;
 }
 
 .add:hover {
-  background-color: #198754;
-  color: #FDE047;
+    background-color: #198754;
+    color: #FDE047;
 }
 
 
-
+/* =====================================================
+   GENERAL TEXT
+===================================================== */
 
 .alltext {
-  font-family: "Spectral", serif;
-  font-weight: 600;
-  font-style: normal;
+    font-family: "Spectral", serif;
+    font-weight: 600;
+    font-style: normal;
 }
 
 
+/* =====================================================
+   EDIT BUTTON
+===================================================== */
 
 .btn-edit {
-  color: #1d4ed8;
-  background-color: #eff6ff;
-  border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
 }
 
 .btn-edit:hover {
-  color: #ffffff;
-  background-color: #2563eb;
-  border-color: #2563eb;
+    color: #ffffff;
+    background-color: #2563eb;
+    border-color: #2563eb;
 }
 
 
+/* =====================================================
+   DELETE BUTTON
+===================================================== */
 
 .btn-delete {
-  color: #dc2626;
-  background-color: #fef2f2;
-  border: 1px solid #fecaca;
+    color: #dc2626;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
 }
 
 .btn-delete:hover {
-  color: #ffffff;
-  background-color: #dc2626;
-  border-color: #dc2626;
+    color: #ffffff;
+    background-color: #dc2626;
+    border-color: #dc2626;
 }
 
 
-
+/* =====================================================
+   EMPLOYEE TABLE
+===================================================== */
 
 .employee-table-box {
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .employee-table {
-  width: 100%;
-  table-layout: fixed;
-  margin-bottom: 0;
+    width: 100%;
+    table-layout: fixed;
+    margin-bottom: 0;
 }
 
 .employee-table th,
 .employee-table td {
-  max-width: 180px;
-  overflow: hidden;
+    max-width: 180px;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 
+/* =====================================================
+   EMPLOYEE TABLE TEXT SCROLL
+===================================================== */
 
-
-.cell-scroll {
-  width: 100%;
-  max-width: 180px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  scrollbar-width: thin;
+.employee-table .cell-scroll {
+    width: 100%;
+    max-width: 180px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scrollbar-width: thin;
+    box-sizing: border-box;
 }
 
-.cell-scroll::-webkit-scrollbar {
-  height: 5px;
+.employee-table .cell-scroll::-webkit-scrollbar {
+    height: 5px;
 }
 
-.cell-scroll::-webkit-scrollbar-thumb {
-  border-radius: 10px;
+.employee-table .cell-scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
 }
 
 
+/* =====================================================
+   EMPLOYEE TABLE BUTTON COLUMNS
+===================================================== */
 
 .employee-table td:last-child,
 .employee-table td:nth-last-child(2) {
-  width: 80px;
-  max-width: 80px;
+    width: 80px;
+    max-width: 80px;
 }
 
 
-
+/* =====================================================
+   MODAL
+===================================================== */
 
 .custom-modal {
-  position: fixed;
-  inset: 0;
+    position: fixed;
+    inset: 0;
 
-  background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  z-index: 9999;
+    z-index: 9999;
 
-  padding: 15px;
+    padding: 15px;
 }
 
 .modal-box {
-  background: white;
+    background: white;
 
-  width: 100%;
-  max-width: 800px;
+    width: 100%;
+    max-width: 800px;
 
-  border-radius: 8px;
+    border-radius: 8px;
 
-  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
 
-  max-height: 95vh;
-  overflow-y: auto;
+    max-height: 95vh;
+    overflow-y: auto;
 }
 
 .modal-header {
-  display: flex;
+    display: flex;
 
-  justify-content: space-between;
-  align-items: center;
+    justify-content: space-between;
+    align-items: center;
 
-  padding: 15px 20px;
+    padding: 15px 20px;
 
-  background-color: #f8f9fa;
+    background-color: #f8f9fa;
 
-  border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
 .modal-header h5 {
-  margin: 0;
+    margin: 0;
 
-  color: #0d6efd;
+    color: #0d6efd;
 
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .close-btn {
-  border: none;
+    border: none;
 
-  background: transparent;
+    background: transparent;
 
-  font-size: 28px;
+    font-size: 28px;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  line-height: 1;
+    line-height: 1;
 }
 
 .modal-body {
-  padding: 25px;
+    padding: 25px;
 }
 
 .modal-footer {
-  display: flex;
+    display: flex;
 
-  justify-content: flex-end;
+    justify-content: flex-end;
 
-  gap: 10px;
+    gap: 10px;
 
-  padding: 15px 20px;
+    padding: 15px 20px;
 
-  background-color: #f8f9fa;
+    background-color: #f8f9fa;
 
-  border-top: 1px solid #ddd;
+    border-top: 1px solid #ddd;
 }
 
 
-
+/* =====================================================
+   EMPLOYEE TABLE - TABLET
+===================================================== */
 
 @media (max-width: 768px) {
 
-  .employee-table {
-    font-size: 13px;
-  }
+    .employee-table {
+        font-size: 13px;
+    }
 
-  .employee-table th,
-  .employee-table td {
-    padding: 8px 6px;
-  }
+    .employee-table th,
+    .employee-table td {
+        padding: 8px 6px;
+    }
 
-  .cell-scroll {
-    max-width: 100px;
-  }
+    .employee-table .cell-scroll {
+        max-width: 100px;
+    }
 
-  .employee-table td:last-child,
-  .employee-table td:nth-last-child(2) {
-    width: 65px;
-    max-width: 65px;
-  }
+    .employee-table td:last-child,
+    .employee-table td:nth-last-child(2) {
+        width: 65px;
+        max-width: 65px;
+    }
 
-  .btn-sm {
-    font-size: 11px;
-    padding: 4px 7px;
-  }
-
+    .btn-sm {
+        font-size: 11px;
+        padding: 4px 7px;
+    }
 }
 
 
-
+/* =====================================================
+   EMPLOYEE TABLE - MOBILE
+===================================================== */
 
 @media (max-width: 480px) {
 
-  .employee-table {
-    font-size: 12px;
-  }
+    .employee-table {
+        font-size: 12px;
+    }
 
-  .employee-table th,
-  .employee-table td {
-    padding: 6px 4px;
-  }
+    .employee-table th,
+    .employee-table td {
+        padding: 6px 4px;
+    }
 
-  .cell-scroll {
-    max-width: 75px;
-  }
+    .employee-table .cell-scroll {
+        max-width: 75px;
+    }
 
-  .employee-table td:last-child,
-  .employee-table td:nth-last-child(2) {
-    width: 58px;
-    max-width: 58px;
-  }
+    .employee-table td:last-child,
+    .employee-table td:nth-last-child(2) {
+        width: 58px;
+        max-width: 58px;
+    }
 
-  .btn-sm {
-    font-size: 10px;
-    padding: 3px 5px;
-  }
-
+    .btn-sm {
+        font-size: 10px;
+        padding: 3px 5px;
+    }
 }
 
 
-
-
-/* Edit Attendance */
+/* =====================================================
+   EDIT ATTENDANCE
+===================================================== */
 
 .edit-attendance-card {
     margin-top: 40px;
@@ -299,39 +328,9 @@
 }
 
 
-
-
-
-
-
-body {
-  background: #f5f5f5;
-}
-
-.edit-employee-card {
-  margin-top: 40px;
-  border-radius: 15px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-}
-
-.edit-employee-header {
-  background: #0d6efd;
-  color: white;
-  text-align: center;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.edit-employee-card .btn-success {
-  width: 150px;
-}
-
-.edit-employee-card .btn-secondary {
-  width: 150px;
-}
-
-
-
+/* =====================================================
+   EDIT EMPLOYEE
+===================================================== */
 
 .edit-employee-card {
     margin-top: 40px;
@@ -356,6 +355,9 @@ body {
 }
 
 
+/* =====================================================
+   SALARY TABLE
+===================================================== */
 
 .salary-table {
     width: 100%;
@@ -367,16 +369,21 @@ body {
 .salary-table td {
     max-width: 180px;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
-.cell-scroll {
+.salary-table .cell-scroll {
     width: 100%;
     max-width: 180px;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
     scrollbar-width: thin;
+    box-sizing: border-box;
 }
+
+
+/* Salary Tablet */
 
 @media (max-width: 768px) {
 
@@ -389,10 +396,13 @@ body {
         padding: 8px 6px;
     }
 
-    .cell-scroll {
+    .salary-table .cell-scroll {
         max-width: 100px;
     }
 }
+
+
+/* Salary Mobile */
 
 @media (max-width: 480px) {
 
@@ -405,210 +415,600 @@ body {
         padding: 6px 4px;
     }
 
-    .cell-scroll {
+    .salary-table .cell-scroll {
         max-width: 75px;
     }
 }
 
 
+/* =====================================================
+   ATTENDANCE TABLE BOX
 
+   IMPORTANT:
+   PURA TABLE SCROLL NAHI HOGA.
+   Sirf Employee Name ke andar scroll hoga.
+===================================================== */
 
-
-
-
-
-
+.attendance-table-box {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
 
 
 /* =====================================================
    ATTENDANCE TABLE
-===================================================== */
 
-.attendance-table-box {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-
-/* =====================================================
-   TABLE
+   IMPORTANT:
+   min-width REMOVE kiya hai.
+   Isse pura table horizontal scroll nahi karega.
 ===================================================== */
 
 .attendance-table {
-  width: 100%;
-  min-width: 700px;
-  margin-bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    margin-bottom: 0;
+    border-collapse: collapse;
 }
 
 
 /* =====================================================
-   TABLE HEADER + CELLS
+   ATTENDANCE TABLE CELLS
 ===================================================== */
 
 .attendance-table th,
 .attendance-table td {
-  vertical-align: middle;
-  white-space: nowrap;
+    vertical-align: middle;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    min-width: 0;
 }
 
 
 /* =====================================================
-   LONG TEXT
+   COLUMN WIDTHS
+
+   ID       = 6%
+   NAME     = 42%
+   DATE     = 15%
+   STATUS   = 13%
+   EDIT     = 12%
+   DELETE   = 12%
+
+   TOTAL = 100%
 ===================================================== */
 
-.attendance-table .cell-scroll {
-  max-width: 250px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
+
+/* ID */
+
+.attendance-table th:nth-child(1),
+.attendance-table td:nth-child(1) {
+    width: 6%;
+    min-width: 0;
+    max-width: 6%;
 }
 
 
 /* =====================================================
-   BUTTON COLUMN
+   EMPLOYEE NAME COLUMN
+
+   Yahi main fix hai.
+===================================================== */
+
+.attendance-table th:nth-child(2),
+.attendance-table td:nth-child(2) {
+    width: 42%;
+    min-width: 0;
+    max-width: 42%;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   EMPLOYEE NAME - ONLY THIS TEXT WILL SCROLL
+
+   Pura table nahi.
+   Pura card nahi.
+   Sirf isi div ke andar text scroll hoga.
+===================================================== */
+
+.attendance-table td:nth-child(2) .cell-scroll {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+
+    min-width: 0;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    white-space: nowrap;
+
+    box-sizing: border-box;
+
+    scrollbar-width: thin;
+}
+
+
+/* =====================================================
+   EMPLOYEE NAME SCROLLBAR
+===================================================== */
+
+.attendance-table td:nth-child(2) .cell-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.attendance-table td:nth-child(2) .cell-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.attendance-table td:nth-child(2) .cell-scroll::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.attendance-table td:nth-child(2) .cell-scroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+/* =====================================================
+   DATE COLUMN
+
+   Date ko scroll nahi karna.
+===================================================== */
+
+.attendance-table th:nth-child(3),
+.attendance-table td:nth-child(3) {
+    width: 15%;
+    min-width: 0;
+    max-width: 15%;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   STATUS COLUMN
+
+   Status ko scroll nahi karna.
+===================================================== */
+
+.attendance-table th:nth-child(4),
+.attendance-table td:nth-child(4) {
+    width: 13%;
+    min-width: 0;
+    max-width: 13%;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   DATE + STATUS TEXT
+===================================================== */
+
+.attendance-table td:nth-child(3) .cell-scroll,
+.attendance-table td:nth-child(4) .cell-scroll {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   EDIT COLUMN
+===================================================== */
+
+.attendance-table th:nth-child(5),
+.attendance-table td:nth-child(5) {
+    width: 12%;
+    min-width: 0;
+    max-width: 12%;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   DELETE COLUMN
+===================================================== */
+
+.attendance-table th:nth-child(6),
+.attendance-table td:nth-child(6) {
+    width: 12%;
+    min-width: 0;
+    max-width: 12%;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   BUTTON COLUMNS
 ===================================================== */
 
 .attendance-table .manage-btn {
-  min-width: 80px;
+    text-align: center;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+}
+
+.attendance-table .manage-btn .btn {
+    white-space: nowrap;
 }
 
 
 /* =====================================================
-   TABLE SCROLLBAR
-===================================================== */
-
-.attendance-table-box::-webkit-scrollbar {
-  height: 8px;
-}
-
-.attendance-table-box::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.attendance-table-box::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
-}
-
-.attendance-table-box::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-
-/* =====================================================
-   TABLET
+   ATTENDANCE TABLE - TABLET
 ===================================================== */
 
 @media (max-width: 768px) {
 
-  .attendance-table-box {
-    width: 100%;
-    overflow-x: auto;
-  }
+    .attendance-table-box {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
 
-  .attendance-table {
-    min-width: 700px;
-  }
+    .attendance-table {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        table-layout: fixed;
+    }
 
-  .attendance-table th,
-  .attendance-table td {
-    padding: 8px;
-    font-size: 14px;
-  }
+    .attendance-table th,
+    .attendance-table td {
+        padding: 8px 6px;
+        font-size: 14px;
+    }
 
-  .attendance-table .cell-scroll {
-    max-width: 200px;
-  }
 
+    /* ID */
+
+    .attendance-table th:nth-child(1),
+    .attendance-table td:nth-child(1) {
+        width: 6%;
+        min-width: 0;
+        max-width: 6%;
+    }
+
+
+    /* Employee Name */
+
+    .attendance-table th:nth-child(2),
+    .attendance-table td:nth-child(2) {
+        width: 42%;
+        min-width: 0;
+        max-width: 42%;
+
+        overflow: hidden;
+    }
+
+    .attendance-table td:nth-child(2) .cell-scroll {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        white-space: nowrap;
+    }
+
+
+    /* Date */
+
+    .attendance-table th:nth-child(3),
+    .attendance-table td:nth-child(3) {
+        width: 15%;
+        min-width: 0;
+        max-width: 15%;
+    }
+
+
+    /* Status */
+
+    .attendance-table th:nth-child(4),
+    .attendance-table td:nth-child(4) {
+        width: 13%;
+        min-width: 0;
+        max-width: 13%;
+    }
+
+
+    /* Edit */
+
+    .attendance-table th:nth-child(5),
+    .attendance-table td:nth-child(5) {
+        width: 12%;
+        min-width: 0;
+        max-width: 12%;
+    }
+
+
+    /* Delete */
+
+    .attendance-table th:nth-child(6),
+    .attendance-table td:nth-child(6) {
+        width: 12%;
+        min-width: 0;
+        max-width: 12%;
+    }
 }
 
 
 /* =====================================================
-   MOBILE
+   ATTENDANCE TABLE - MOBILE
 ===================================================== */
 
 @media (max-width: 576px) {
 
-  .attendance-table-box {
-    width: 100%;
-    overflow-x: auto;
-  }
+    .attendance-table-box {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
 
-  .attendance-table {
-    min-width: 650px;
-  }
+    .attendance-table {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        table-layout: fixed;
+    }
 
-  .attendance-table th,
-  .attendance-table td {
-    padding: 7px;
-    font-size: 13px;
-  }
+    .attendance-table th,
+    .attendance-table td {
+        padding: 7px 5px;
+        font-size: 13px;
+    }
 
-  .attendance-table .cell-scroll {
-    max-width: 170px;
-  }
 
-  .attendance-table .manage-btn {
-    min-width: 75px;
-  }
+    /* ID */
 
+    .attendance-table th:nth-child(1),
+    .attendance-table td:nth-child(1) {
+        width: 7%;
+        min-width: 0;
+        max-width: 7%;
+    }
+
+
+    /* Employee Name */
+
+    .attendance-table th:nth-child(2),
+    .attendance-table td:nth-child(2) {
+        width: 39%;
+        min-width: 0;
+        max-width: 39%;
+
+        overflow: hidden;
+    }
+
+    .attendance-table td:nth-child(2) .cell-scroll {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        white-space: nowrap;
+    }
+
+
+    /* Date */
+
+    .attendance-table th:nth-child(3),
+    .attendance-table td:nth-child(3) {
+        width: 16%;
+        min-width: 0;
+        max-width: 16%;
+    }
+
+
+    /* Status */
+
+    .attendance-table th:nth-child(4),
+    .attendance-table td:nth-child(4) {
+        width: 14%;
+        min-width: 0;
+        max-width: 14%;
+    }
+
+
+    /* Edit */
+
+    .attendance-table th:nth-child(5),
+    .attendance-table td:nth-child(5) {
+        width: 12%;
+        min-width: 0;
+        max-width: 12%;
+    }
+
+
+    /* Delete */
+
+    .attendance-table th:nth-child(6),
+    .attendance-table td:nth-child(6) {
+        width: 12%;
+        min-width: 0;
+        max-width: 12%;
+    }
+
+
+    .attendance-table .manage-btn {
+        min-width: 0;
+    }
+
+    .attendance-table .manage-btn .btn {
+        font-size: 11px;
+        padding: 4px 6px;
+    }
 }
 
 
 /* =====================================================
-   SMALL MOBILE
+   ATTENDANCE TABLE - SMALL MOBILE
 ===================================================== */
 
 @media (max-width: 400px) {
 
-  .attendance-table {
-    min-width: 620px;
-  }
+    .attendance-table-box {
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
 
-  .attendance-table th,
-  .attendance-table td {
-    padding: 6px;
-    font-size: 12px;
-  }
+    .attendance-table {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        table-layout: fixed;
+    }
 
-  .attendance-table .cell-scroll {
-    max-width: 150px;
-  }
+    .attendance-table th,
+    .attendance-table td {
+        padding: 6px 4px;
+        font-size: 12px;
+    }
 
+
+    /* ID */
+
+    .attendance-table th:nth-child(1),
+    .attendance-table td:nth-child(1) {
+        width: 7%;
+        min-width: 0;
+        max-width: 7%;
+    }
+
+
+    /* Employee Name */
+
+    .attendance-table th:nth-child(2),
+    .attendance-table td:nth-child(2) {
+        width: 39%;
+        min-width: 0;
+        max-width: 39%;
+
+        overflow: hidden;
+    }
+
+    .attendance-table td:nth-child(2) .cell-scroll {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        white-space: nowrap;
+    }
+
+
+    /* Date */
+
+    .attendance-table th:nth-child(3),
+    .attendance-table td:nth-child(3) {
+        width: 16%;
+        min-width: 0;
+        max-width: 16%;
+    }
+
+
+    /* Status */
+
+    .attendance-table th:nth-child(4),
+    .attendance-table td:nth-child(4) {
+        width: 14%;
+        min-width: 0;
+        max-width: 14%;
+    }
+
+
+    /* Edit */
+
+    .attendance-table th:nth-child(5),
+    .attendance-table td:nth-child(5) {
+        width: 12%;
+        min-width: 0;
+        max-width: 12%;
+    }
+
+
+    /* Delete */
+
+    .attendance-table th:nth-child(6),
+    .attendance-table td:nth-child(6) {
+        width: 12%;
+        min-width: 0;
+        max-width: 12%;
+    }
+
+
+    .attendance-table .manage-btn .btn {
+        font-size: 10px;
+        padding: 3px 5px;
+    }
 }
 
 
-
-
-
-
-
-
+/* =====================================================
+   SAVE BUTTON
+===================================================== */
 
 .btn-save {
-  color: #ffffff;
-  background-color: #16a34a;
-  border: 1px solid #16a34a;
+    color: #ffffff;
+    background-color: #16a34a;
+    border: 1px solid #16a34a;
 }
 
 .btn-save:hover {
-  background-color: #15803d;
-  border-color: #15803d;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #15803d;
+    border-color: #15803d;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 
+/* =====================================================
+   RESET BUTTON
+===================================================== */
+
 .btn-reset {
-  color: #374151;
-  background-color: #f3f4f6;
-  border: 1px solid #d1d5db;
+    color: #374151;
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
 }
 
 .btn-reset:hover {
-  color: #1f2937;
-  background-color: #e5e7eb;
-  border-color: #9ca3af;
+    color: #1f2937;
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
 }

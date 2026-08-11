@@ -342,10 +342,14 @@ const Employ_list = () => {
 
 
           <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapsibleNavbar"
+                  className="navbar-toggler"
+                  style={{
+                    backgroundColor: "#018c8c90",
+                    color: "#FFFFFF"
+                  }}
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapsibleNavbar"
           >
 
             <span className="navbar-toggler-icon"></span>

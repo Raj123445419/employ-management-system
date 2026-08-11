@@ -98,77 +98,63 @@ const Employ_attendance = () => {
 
   // ================= SAVE ATTENDANCE =================
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    e.preventDefault();
+  setError("");
 
-    setError("");
+  console.log("Sending attendance data:", formData);
 
-    try {
+  try {
+    const response = await fetch(
+      `${API_URL}/Employ_attendance/`,
+      {
+        method: "POST",
 
-      const response = await fetch(
-        `${API_URL}/Employ_attendance/`,
-        {
-          method: "POST",
+        headers: {
+          "Content-Type":
+            "application/x-www-form-urlencoded",
+          "Accept": "application/json"
+        },
 
-          headers: {
-            "Content-Type":
-              "application/x-www-form-urlencoded",
-
-            "Accept":
-              "application/json"
-          },
-
-          body: new URLSearchParams(formData)
-        }
-      );
-
-      if (response.ok) {
-
-        alert(
-          "Attendance Saved Successfully"
-        );
-
-        setFormData({
-          EmployId: "",
-          Date: "",
-          Status: ""
-        });
-
-        getAttendance();
-
-      } else {
-
-        let data = {};
-
-        try {
-
-          data = await response.json();
-
-        } catch {
-
-          // Response JSON nahi hai
-
-        }
-
-        alert(
-          data.error ||
-          "Attendance Save Failed"
-        );
-
+        body: new URLSearchParams(formData)
       }
+    );
 
-    } catch (error) {
+    console.log("Response status:", response.status);
 
-      console.log(error);
+    const responseText = await response.text();
+
+    console.log("Backend response:", responseText);
+
+    if (response.ok) {
+
+      alert("Attendance Saved Successfully");
+
+      setFormData({
+        EmployId: "",
+        Date: "",
+        Status: ""
+      });
+
+      getAttendance();
+
+    } else {
 
       alert(
-        "Backend connection error"
+        `Attendance Save Failed\n\nStatus: ${response.status}\n\n${responseText}`
       );
-
     }
 
-  };
+  } catch (error) {
+
+    console.error("Attendance Error:", error);
+
+    alert(
+      `Backend connection error\n\n${error.message}`
+    );
+  }
+};
 
   // ================= RESET =================
 
@@ -287,10 +273,14 @@ const Employ_attendance = () => {
           </Link>
 
           <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapsibleNavbar"
+                  className="navbar-toggler"
+                  style={{
+                    backgroundColor: "#018c8c90",
+                    color: "#FFFFFF"
+                  }}
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapsibleNavbar"
           >
 
             <span className="navbar-toggler-icon"></span>
@@ -519,7 +509,7 @@ const Employ_attendance = () => {
 
             <div className="attendance-table-box">
 
-              <table className="table table-bordered table-striped attendance-table">
+             <table className="table table-bordered table-striped attendance-table">
 
                 <thead>
 

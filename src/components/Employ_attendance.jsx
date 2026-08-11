@@ -557,12 +557,7 @@ const Employ_attendance = () => {
 
                     <tr>
 
-                      <td
-                        colSpan="6"
-                        className="text-center"
-                      >
-                        No Attendance Data Found
-                      </td>
+
 
                     </tr>
 

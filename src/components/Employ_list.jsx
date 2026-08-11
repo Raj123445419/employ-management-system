@@ -509,12 +509,7 @@ const Employ_list = () => {
 
                 <tr>
 
-                  <td
-                    colSpan="9"
-                    className="text-center"
-                  >
-                    No Employee Data Found
-                  </td>
+
 
                 </tr>
 

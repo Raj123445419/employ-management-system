@@ -376,16 +376,9 @@ const Employ_Sallery = () => {
 
       {loading ? (
 
-        <div
-          className="
-            text-center
-            mt-4
-          "
-        >
+        <div>
 
-          <h5>
-            Loading salary...
-          </h5>
+
 
         </div>
 
@@ -473,16 +466,7 @@ const Employ_Sallery = () => {
 
                 <tr>
 
-                  <td
-                    colSpan="8"
-                    className="
-                      text-center
-                    "
-                  >
 
-                    No salary record found
-
-                  </td>
 
                 </tr>
 

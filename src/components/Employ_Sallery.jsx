@@ -1,212 +1,428 @@
-  import React, { useEffect, useState } from "react";
-  import { Link } from "react-router-dom";
+import React, {
+  useEffect,
+  useState
+} from "react";
+
+import {
+  Link
+} from "react-router-dom";
 
 
+const API_URL =
+  "https://backend-z4sf.onrender.com";
 
-  const API_URL = "https://backend-z4sf.onrender.com";
+
+const Employ_Sallery = () => {
+
+  const [salaryData, setSalaryData] =
+    useState([]);
+
+  const [loading, setLoading] =
+    useState(true);
 
 
-  const Employ_Sallery = () => {
+  // =====================================================
+  // GET SALARY DATA
+  // =====================================================
 
-    const [salaryData, setSalaryData] = useState([]);
+  const getSalaryData = async () => {
 
-    const [loading, setLoading] = useState(true);
+    try {
 
-    // ================= GET SALARY DATA =================
+      setLoading(true);
 
-    const getSalaryData = async () => {
+      const response = await fetch(
 
-      try {
+        `${API_URL}/Employ_Sallery/`,
 
-        setLoading(true);
+        {
+          method: "GET",
 
-        const response = await fetch(
-          `${API_URL}/Employ_Sallery/`,
-          {
-            method: "GET",
-
-            headers: {
-              "Accept": "application/json"
-            }
+          headers: {
+            "Accept":
+              "application/json"
           }
-        );
-
-        if (!response.ok) {
-
-          throw new Error(
-            "Failed to fetch salary data"
-          );
-
         }
 
-        const data = await response.json();
+      );
 
-        console.log(
-          "Salary data from Django:",
-          data
+
+      if (!response.ok) {
+
+        throw new Error(
+          "Failed to fetch salary data"
         );
-
-        setSalaryData(data);
-
-      } catch (error) {
-
-        console.log(error);
-
-      } finally {
-
-        setLoading(false);
 
       }
 
-    };
 
-    useEffect(() => {
-
-      getSalaryData();
-
-    }, []);
+      const data =
+        await response.json();
 
 
-
-    return (
-
-      <>
-
-        {/* ================= NAVBAR ================= */}
-
-        <header>
-
-          <div className="all">
-
-            <nav className="navbar navbar-expand-sm">
-
-              <div className="container-fluid">
+      console.log(
+        "Salary data from Django:",
+        data
+      );
 
 
-                {/* LOGO */}
+      setSalaryData(
+        Array.isArray(data)
+          ? data
+          : []
+      );
 
-                <Link
-                  className="navbar-brand fontnav px-2 px-md-3 cl1"
-                  to="/"
+
+    } catch (error) {
+
+      console.log(
+        "Salary Error:",
+        error
+      );
+
+      setSalaryData([]);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+
+  // =====================================================
+  // LOAD SALARY
+  // =====================================================
+
+  useEffect(() => {
+
+    getSalaryData();
+
+  }, []);
+
+
+  // =====================================================
+  // MONTH NAME
+  // =====================================================
+
+  const getMonthName = (month) => {
+
+    const months = [
+
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+
+    ];
+
+    const index =
+      Number(month) - 1;
+
+
+    if (
+      index < 0 ||
+      index > 11
+    ) {
+
+      return month;
+
+    }
+
+
+    return months[index];
+
+  };
+
+
+  return (
+
+    <>
+
+      {/* =================================================
+          NAVBAR
+      ================================================= */}
+
+      <header>
+
+        <div className="all">
+
+          <nav
+            className="
+              navbar
+              navbar-expand-sm
+            "
+          >
+
+            <div
+              className="
+                container-fluid
+              "
+            >
+
+              {/* LOGO */}
+
+              <Link
+                className="
+                  navbar-brand
+                  fontnav
+                  px-2
+                  px-md-3
+                  cl1
+                "
+                to="/"
+              >
+
+                Employ Management System
+
+              </Link>
+
+
+              {/* TOGGLER */}
+
+              <button
+
+                className="
+                  navbar-toggler
+                "
+
+                style={{
+                  backgroundColor:
+                    "#018c8c90",
+
+                  color:
+                    "#FFFFFF"
+                }}
+
+                type="button"
+
+                data-bs-toggle="collapse"
+
+                data-bs-target="
+                  #collapsibleNavbar
+                "
+
+              >
+
+                <span
+                  className="
+                    navbar-toggler-icon
+                  "
+                />
+
+              </button>
+
+
+              {/* NAV LINKS */}
+
+              <div
+
+                className="
+                  collapse
+                  navbar-collapse
+                "
+
+                style={{
+                  justifyContent:
+                    "end"
+                }}
+
+                id="
+                  collapsibleNavbar
+                "
+
+              >
+
+                <ul
+                  className="
+                    navbar-nav
+                  "
                 >
-                  Employ Management System
-                </Link>
+
+                  {/* EMPLOY LIST */}
+
+                  <li
+                    className="
+                      nav-item
+                    "
+                  >
+
+                    <Link
+
+                      className="
+                        nav-link
+                        px-2
+                        px-md-3
+                        cl1
+                      "
+
+                      to="/"
+
+                    >
+
+                      Employ List
+
+                    </Link>
+
+                  </li>
 
 
-                {/* TOGGLER */}
+                  {/* ATTENDANCE */}
 
-                <button
-                  className="navbar-toggler"
-                  style={{
-                    backgroundColor: "#018c8c90",
-                    color: "#FFFFFF"
-                  }}
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapsibleNavbar"
-                >
+                  <li
+                    className="
+                      nav-item
+                    "
+                  >
 
-                  <span className="navbar-toggler-icon"></span>
+                    <Link
 
-                </button>
+                      className="
+                        nav-link
+                        px-2
+                        px-md-3
+                        cl1
+                      "
 
+                      to="/attendance"
 
-                {/* NAV LINKS */}
+                    >
 
-                <div
-                  className="collapse navbar-collapse"
-                  style={{
-                    justifyContent: "end"
-                  }}
-                  id="collapsibleNavbar"
-                >
+                      Employ Attendance
 
-                  <ul className="navbar-nav">
+                    </Link>
+
+                  </li>
 
 
-                    {/* EMPLOY LIST */}
+                  {/* SALARY */}
 
-                    <li className="nav-item">
+                  <li
+                    className="
+                      nav-item
+                    "
+                  >
 
-                      <Link
-                        className="nav-link px-2 px-md-3 cl1"
-                        to="/"
-                      >
-                        Employ List
-                      </Link>
+                    <Link
 
-                    </li>
+                      className="
+                        nav-link
+                        px-2
+                        px-md-3
+                        cl1
+                      "
 
+                      to="/salary"
 
-                    {/* ATTENDANCE */}
+                    >
 
-                    <li className="nav-item">
+                      Employ Sallery Count
 
-                      <Link
-                        className="nav-link px-2 px-md-3 cl1"
-                        to="/attendance"
-                      >
-                        Employ Attendance
-                      </Link>
+                    </Link>
 
-                    </li>
+                  </li>
 
-
-                    {/* SALARY */}
-
-                    <li className="nav-item">
-
-                      <Link
-                        className="nav-link px-2 px-md-3 cl1"
-                        to="/salary"
-                      >
-                        Employ Sallery Count
-                      </Link>
-
-                    </li>
-
-
-                  </ul>
-
-                </div>
+                </ul>
 
               </div>
 
-            </nav>
+            </div>
 
-          </div>
-
-        </header>
-
-
-        {/* ================= PAGE TITLE ================= */}
-
-        <div
-          className="col-md-12 mt-4 alltext"
-          style={{
-            textAlign: "center"
-          }}
-        >
-
-          <h1>
-            Employ Sallery Count
-          </h1>
+          </nav>
 
         </div>
 
+      </header>
 
-        {/* ================= SALARY TABLE ================= */}
 
-        <div className="w-100 overflow-hidden">
+      {/* =================================================
+          PAGE TITLE
+      ================================================= */}
+
+      <div
+
+        className="
+          col-md-12
+          mt-4
+          alltext
+        "
+
+        style={{
+          textAlign:
+            "center"
+        }}
+
+      >
+
+        <h1>
+          Employ Sallery Count
+        </h1>
+
+      </div>
+
+
+      {/* =================================================
+          LOADING
+      ================================================= */}
+
+      {loading ? (
+
+        <div
+          className="
+            text-center
+            mt-4
+          "
+        >
+
+          <h5>
+            Loading salary...
+          </h5>
+
+        </div>
+
+      ) : (
+
+        /* =================================================
+           SALARY TABLE
+        ================================================= */
+
+        <div
+          className="
+            w-100
+            overflow-hidden
+          "
+        >
 
           <table
-            className="table table-bordered table-striped alltext salary-table"
+
+            className="
+              table
+              table-bordered
+              table-striped
+              alltext
+              salary-table
+            "
+
           >
 
+            {/* =================================================
+                TABLE HEADER
+            ================================================= */}
 
-            {/* TABLE HEADER */}
-
-            <thead className="table-dark">
+            <thead
+              className="
+                table-dark
+              "
+            >
 
               <tr>
 
@@ -216,6 +432,10 @@
 
                 <th>
                   Employee Name
+                </th>
+
+                <th>
+                  Month
                 </th>
 
                 <th>
@@ -243,7 +463,9 @@
             </thead>
 
 
-            {/* TABLE BODY */}
+            {/* =================================================
+                TABLE BODY
+            ================================================= */}
 
             <tbody>
 
@@ -251,7 +473,16 @@
 
                 <tr>
 
+                  <td
+                    colSpan="8"
+                    className="
+                      text-center
+                    "
+                  >
 
+                    No salary record found
+
+                  </td>
 
                 </tr>
 
@@ -259,13 +490,22 @@
 
                 salaryData.map((p) => (
 
-                  <tr key={p.EmployId}>
+                  <tr
 
+                    key={`
+                      ${p.EmployId}-
+                      ${p.Month}-
+                      ${p.Year}
+                    `}
+
+                  >
 
                     {/* EMPLOYEE ID */}
 
                     <td>
+
                       {p.EmployId}
+
                     </td>
 
 
@@ -273,9 +513,36 @@
 
                     <td>
 
-                      <div className="cell-scroll">
+                      <div
+                        className="
+                          cell-scroll
+                        "
+                      >
 
                         {p.Employname}
+
+                      </div>
+
+                    </td>
+
+
+                    {/* MONTH */}
+
+                    <td>
+
+                      <div
+                        className="
+                          cell-scroll
+                        "
+                      >
+
+                        {getMonthName(
+                          p.Month
+                        )}
+
+                        {" "}
+
+                        {p.Year}
 
                       </div>
 
@@ -286,9 +553,19 @@
 
                     <td>
 
-                      <div className="cell-scroll">
+                      <div
+                        className="
+                          cell-scroll
+                        "
+                      >
 
-                        ₹ {p.Salary}
+                        ₹{" "}
+
+                        {Number(
+                          p.MonthlySalary ??
+                          p.Salary ??
+                          0
+                        ).toFixed(2)}
 
                       </div>
 
@@ -298,21 +575,27 @@
                     {/* PRESENT */}
 
                     <td>
+
                       {p.Present}
+
                     </td>
 
 
                     {/* HALF DAY */}
 
                     <td>
+
                       {p.HalfDay}
+
                     </td>
 
 
                     {/* ABSENT */}
 
                     <td>
+
                       {p.Absent}
+
                     </td>
 
 
@@ -320,16 +603,25 @@
 
                     <td>
 
-                      <div className="cell-scroll">
+                      <div
+                        className="
+                          cell-scroll
+                        "
+                      >
 
                         <b>
-                          ₹ {p.TotalSalary}
+
+                          ₹{" "}
+
+                          {Number(
+                            p.TotalSalary ?? 0
+                          ).toFixed(2)}
+
                         </b>
 
                       </div>
 
                     </td>
-
 
                   </tr>
 
@@ -339,15 +631,17 @@
 
             </tbody>
 
-
           </table>
 
         </div>
 
-      </>
+      )}
 
-    );
+    </>
 
-  };
+  );
 
-  export default Employ_Sallery;
+};
+
+
+export default Employ_Sallery;

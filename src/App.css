@@ -420,7 +420,165 @@ body {
 
 
 
+/* =====================================================
+   ATTENDANCE TABLE
+===================================================== */
 
+.attendance-table-box {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.attendance-table {
+  width: 100%;
+  min-width: 700px;
+  margin-bottom: 0;
+}
+
+
+/* =====================================================
+   TABLE HEADER + CELLS
+===================================================== */
+
+.attendance-table th,
+.attendance-table td {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   LONG TEXT
+===================================================== */
+
+.attendance-table .cell-scroll {
+  max-width: 250px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   BUTTON COLUMN
+===================================================== */
+
+.attendance-table .manage-btn {
+  min-width: 80px;
+}
+
+
+/* =====================================================
+   TABLE SCROLLBAR
+===================================================== */
+
+.attendance-table-box::-webkit-scrollbar {
+  height: 8px;
+}
+
+.attendance-table-box::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.attendance-table-box::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.attendance-table-box::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .attendance-table-box {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .attendance-table {
+    min-width: 700px;
+  }
+
+  .attendance-table th,
+  .attendance-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .attendance-table .cell-scroll {
+    max-width: 200px;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 576px) {
+
+  .attendance-table-box {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .attendance-table {
+    min-width: 650px;
+  }
+
+  .attendance-table th,
+  .attendance-table td {
+    padding: 7px;
+    font-size: 13px;
+  }
+
+  .attendance-table .cell-scroll {
+    max-width: 170px;
+  }
+
+  .attendance-table .manage-btn {
+    min-width: 75px;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 400px) {
+
+  .attendance-table {
+    min-width: 620px;
+  }
+
+  .attendance-table th,
+  .attendance-table td {
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .attendance-table .cell-scroll {
+    max-width: 150px;
+  }
+
+}
 
 
 

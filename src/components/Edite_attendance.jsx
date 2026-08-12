@@ -104,34 +104,21 @@ function Edite_attendance() {
         }
       );
 
-      if (response.ok) {
-        alert(
-          "Attendance Updated Successfully"
-        );
-
-        // Attendance List par wapas
+     if (response.ok || response.status === 200 || response.status === 302) {
+        alert("Attendance Updated Successfully");
         navigate("/attendance");
-
       } else {
-        const data = await response.json().catch(() => ({}));
-
-        alert(
-          data.error ||
-          "Attendance Update Failed"
-        );
+        const text = await response.text();
+        console.log("Server response:", text);
+        alert("Attendance Update Failed");
       }
 
     } catch (error) {
       console.log(error);
-
-      alert(
-        "Backend connection error"
-      );
-
+      alert("Backend connection error");
     } finally {
       setLoading(false);
     }
-
   };
 
   // =====================================================

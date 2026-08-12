@@ -225,7 +225,55 @@ useEffect(() => {
 
 
 
+useEffect(() => {
+  let interval;
+  let isMounted = true; // Component unmount hone par state leak na ho
 
+  if (showQR && formData.EmployId) {
+    interval = setInterval(async () => {
+      try {
+        const response = await fetch(`${API_URL}/Employ_attendance/`, {
+          headers: { Accept: "application/json" },
+        });
+        if (response.ok && isMounted) {
+          const data = await response.json();
+          
+          const marked = data.find(
+            (item) => 
+              String(item.EmployId) === String(formData.EmployId) && 
+              item.Date === formData.Date
+          );
+
+          if (marked) {
+            setShowQR(false);
+            clearInterval(interval); // Turant interval roko taaki dubara na chale
+            getAttendance();
+            
+            // Standard alert ki jagah custom notification dikhayein
+            setNotification(`Attendance successfully marked for ID: ${formData.EmployId}!`);
+            
+            // 10 second baad automatic message gayab karne ke liye
+            setTimeout(() => {
+              setNotification("");
+            }, 10000);
+            
+            setFormData({
+              EmployId: "",
+              Date: new Date().toISOString().split("T")[0],
+            });
+          }
+        }
+      } catch (err) {
+        console.log("Background check error", err);
+      }
+    }, 3000);
+  }
+
+  return () => {
+    isMounted = false;
+    clearInterval(interval);
+  };
+}, [showQR, formData.EmployId, formData.Date]);
 
 
   return (
@@ -270,6 +318,34 @@ useEffect(() => {
           </div>
         </nav>
       </div>
+
+
+
+{/*  */}
+
+
+{notification && (
+  <div className="alert alert-success alert-dismissible fade show text-center mt-3" role="alert">
+    <strong>{notification}</strong>
+    <button 
+      type="button" 
+      className="btn-close" 
+      onClick={() => setNotification("")}
+      aria-label="Close"
+    ></button>
+  </div>
+)}
+
+{/*  */}
+
+
+
+
+
+
+
+
+
 
       {/* MAIN CONTAINER */}
       <div className="container alltext">

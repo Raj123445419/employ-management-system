@@ -186,7 +186,42 @@ const Employ_attendance = () => {
     }
   };
 
+useEffect(() => {
+    let interval;
+    if (showQR && formData.EmployId) {
+      interval = setInterval(async () => {
+        try {
+          const response = await fetch(`${API_URL}/Employ_attendance/`, {
+            headers: { Accept: "application/json" },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            
+            const marked = data.find(
+              (item) => 
+                String(item.EmployId) === String(formData.EmployId) && 
+                item.Date === formData.Date
+            );
 
+            if (marked) {
+              setShowQR(false);
+              getAttendance();
+              alert(`Attendance successfully marked for ID: ${formData.EmployId}!`);
+              
+              setFormData({
+                EmployId: "",
+                Date: new Date().toISOString().split("T")[0],
+              });
+            }
+          }
+        } catch (err) {
+          console.log("Background check error", err);
+        }
+      }, 3000);
+    }
+
+    return () => clearInterval(interval);
+  }, [showQR, formData.EmployId, formData.Date]);
 
 
 

@@ -14,7 +14,7 @@ const API_URL = "https://backend-z4sf.onrender.com";
 
 const Employ_attendance = () => {
   const navigate = useNavigate();
-
+  const [notification, setNotification] = useState("");
   const [attendance, setAttendance] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

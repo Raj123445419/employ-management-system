@@ -1,7 +1,8 @@
 import "../App.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
+import { QRCodeSVG } from 'qrcode.react';
+import { QrReader } from 'react-qr-reader';
 // =====================================================
 // DJANGO BACKEND URL
 // =====================================================
@@ -17,37 +18,32 @@ const Employ_attendance = () => {
   const [attendance, setAttendance] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [employees, setEmployees] = useState([]);
+  const [showQR, setShowQR] = useState(false);
 
+  // Default date aaj ki set kar rahe hain
   const [formData, setFormData] = useState({
     EmployId: "",
-    Date: "",
-    Status: ""
+    Date: new Date().toISOString().split("T")[0]
   });
 
   // ================= GET ATTENDANCE =================
-
   const getAttendance = async () => {
     try {
       setLoading(true);
-
-      const response = await fetch(
-        `${API_URL}/Employ_attendance/`,
-        {
-          method: "GET",
-          headers: {
-            "Accept": "application/json"
-          }
-        }
-      );
+      const response = await fetch(`${API_URL}/Employ_attendance/`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch attendance");
       }
 
       const data = await response.json();
-      console.log("Attendance from Django:", data);
       setAttendance(data);
-
     } catch (error) {
       console.log(error);
       setError("Failed to load attendance");
@@ -56,50 +52,78 @@ const Employ_attendance = () => {
     }
   };
 
+  // ================= GET EMPLOYEES =================
+  const getEmployees = async () => {
+    try {
+      const response = await fetch(`${API_URL}/`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setEmployees(data);
+      }
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+    }
+  };
+
+  // ================= USE EFFECT (Run on page load) =================
   useEffect(() => {
     getAttendance();
+    getEmployees();
+
+    // Page load hone par form me automatic aaj ki date daal dega
+    const today = new Date().toISOString().split("T")[0];
+    setFormData((prevData) => ({
+      ...prevData,
+      Date: today,
+    }));
   }, []);
 
   // ================= INPUT CHANGE =================
-
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value,
     });
+
+    // Agar Employee ID select ki hai toh automatic QR popup khol do
+    if (name === "EmployId" && value !== "") {
+      setShowQR(true);
+    }
   };
 
   // ================= SAVE ATTENDANCE =================
-
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    console.log("Sending attendance data:", formData);
+    // Form data ke sath automatic "Present" status bhej rahe hain
+    const submissionData = {
+      ...formData,
+      Status: "Present" 
+    };
 
     try {
-      const response = await fetch(
-        `${API_URL}/Employ_attendance/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Accept": "application/json"
-          },
-          body: new URLSearchParams(formData)
-        }
-      );
+      const response = await fetch(`${API_URL}/Employ_attendance/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        },
+        body: new URLSearchParams(submissionData),
+      });
 
-      console.log("Response status:", response.status);
       const responseText = await response.text();
-      console.log("Backend response:", responseText);
 
       if (response.ok) {
         alert("Attendance Saved Successfully");
         setFormData({
           EmployId: "",
-          Date: "",
-          Status: ""
+          Date: new Date().toISOString().split("T")[0],
         });
         getAttendance();
       } else {
@@ -107,55 +131,44 @@ const Employ_attendance = () => {
           `Attendance Save Failed\n\nStatus: ${response.status}\n\n${responseText}`
         );
       }
-
     } catch (error) {
       console.error("Attendance Error:", error);
       alert(`Backend connection error\n\n${error.message}`);
     }
   };
-
   // ================= RESET =================
-
   const handleReset = () => {
     setFormData({
       EmployId: "",
-      Date: "",
-      Status: ""
+      Date: new Date().toISOString().split("T")[0], // Reset par bhi aaj ki date set hogi
     });
     setError("");
   };
 
   // ================= EDIT =================
-
   const handleEdit = (item) => {
     navigate(`/edit-attendance/${item.id}`, {
       state: {
-        attendance: item
-      }
+        attendance: item,
+      },
     });
   };
 
   // ================= DELETE =================
-
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this attendance?"
     );
 
-    if (!confirmDelete) {
-      return;
-    }
+    if (!confirmDelete) return;
 
     try {
-      const response = await fetch(
-        `${API_URL}/Delete_attendance/${id}/`,
-        {
-          method: "DELETE",
-          headers: {
-            "Accept": "application/json"
-          }
-        }
-      );
+      const response = await fetch(`${API_URL}/Delete_attendance/${id}/`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+        },
+      });
 
       if (response.ok) {
         alert("Attendance Deleted Successfully");
@@ -164,40 +177,35 @@ const Employ_attendance = () => {
         let data = {};
         try {
           data = await response.json();
-        } catch {
-          // Response JSON nahi hai
-        }
-
+        } catch {}
         alert(data.error || "Delete Failed");
       }
-
     } catch (error) {
       console.log(error);
       alert("Backend connection error");
     }
   };
 
+
+
+
+
+
+
+
   return (
     <>
-      {/* =====================================================
-          NAVBAR
-      ====================================================== */}
+      {/* NAVBAR */}
       <div className="all">
         <nav className="navbar navbar-expand-sm">
           <div className="container-fluid">
-            <Link
-              className="navbar-brand fontnav px-2 px-md-3 cl1"
-              to="/"
-            >
+            <Link className="navbar-brand fontnav px-2 px-md-3 cl1" to="/">
               Employ Management System
             </Link>
 
             <button
               className="navbar-toggler"
-              style={{
-                backgroundColor: "#018c8c90",
-                color: "#FFFFFF"
-              }}
+              style={{ backgroundColor: "#018c8c90", color: "#FFFFFF" }}
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#collapsibleNavbar"
@@ -205,34 +213,20 @@ const Employ_attendance = () => {
               <span className="navbar-toggler-icon"></span>
             </button>
 
-            <div
-              className="collapse navbar-collapse"
-              id="collapsibleNavbar"
-            >
+            <div className="collapse navbar-collapse" id="collapsibleNavbar">
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                  <Link
-                    className="nav-link px-2 px-md-3 cl1"
-                    to="/"
-                  >
+                  <Link className="nav-link px-2 px-md-3 cl1" to="/">
                     Employ List
                   </Link>
                 </li>
-
                 <li className="nav-item">
-                  <Link
-                    className="nav-link px-2 px-md-3 cl1"
-                    to="/attendance"
-                  >
+                  <Link className="nav-link px-2 px-md-3 cl1" to="/attendance">
                     Employ Attendance
                   </Link>
                 </li>
-
                 <li className="nav-item">
-                  <Link
-                    className="nav-link px-2 px-md-3 cl1"
-                    to="/salary"
-                  >
+                  <Link className="nav-link px-2 px-md-3 cl1" to="/salary">
                     Employ Sallery Count
                   </Link>
                 </li>
@@ -242,10 +236,7 @@ const Employ_attendance = () => {
         </nav>
       </div>
 
-      {/* =====================================================
-          MAIN CONTAINER
-      ====================================================== */}
-
+      {/* MAIN CONTAINER */}
       <div className="container alltext">
         <div className="col-md-12 text-dark mt-5">
           <center>
@@ -257,8 +248,7 @@ const Employ_attendance = () => {
           </center>
         </div>
 
-        {/* ================= ATTENDANCE FORM ================= */}
-
+        {/* ATTENDANCE FORM */}
         <div className="card mt-5">
           <div className="card-body">
             <form onSubmit={handleSubmit}>
@@ -268,29 +258,31 @@ const Employ_attendance = () => {
                     <div className="row">
                       {/* EMPLOYEE ID */}
                       <div className="col-md-6 mb-3">
-                        <label className="form-label">
-                          Employee ID
-                        </label>
+                        <label className="form-label">Select Employee</label>
                         {loading ? (
                           <div className="skeleton-input-box"></div>
                         ) : (
-                          <input
-                            type="number"
+                          <select
                             name="EmployId"
-                            className="form-control"
-                            placeholder="Enter Employee ID"
+                            className="form-select"
                             value={formData.EmployId}
                             onChange={handleChange}
                             required
-                          />
+                          >
+                            <option value="">Select Employee</option>
+                            {employees.map((emp) => (
+                              <option key={emp.EmployId} value={emp.EmployId}>
+                                {emp.EmployId} - {emp.Employname}
+                              </option>
+                            ))}
+                          </select>
                         )}
                       </div>
 
+
                       {/* DATE */}
                       <div className="col-md-6 mb-3">
-                        <label className="form-label">
-                          Attendance Date
-                        </label>
+                        <label className="form-label">Attendance Date</label>
                         {loading ? (
                           <div className="skeleton-input-box"></div>
                         ) : (
@@ -306,48 +298,15 @@ const Employ_attendance = () => {
                       </div>
 
                       {/* STATUS */}
-                      <div className="col-md-6 mb-3">
-                        <label className="form-label">
-                          Attendance Status
-                        </label>
-                        {loading ? (
-                          <div className="skeleton-input-box"></div>
-                        ) : (
-                          <select
-                            name="Status"
-                            className="form-select"
-                            value={formData.Status}
-                            onChange={handleChange}
-                            required
-                          >
-                            <option value="">
-                              Select Status
-                            </option>
-                            <option value="Present">
-                              Present
-                            </option>
-                            <option value="Absent">
-                              Absent
-                            </option>
-                            <option value="Half Day">
-                              Half Day
-                            </option>
-                          </select>
-                        )}
-                      </div>
+
                     </div>
                   </div>
 
-                  {/* ================= FOOTER BUTTONS ================= */}
-
+                  {/* FOOTER BUTTONS */}
                   <div className="card-footer text-center">
-                    <button
-                      type="submit"
-                      className="btn btn-save me-2"
-                    >
+                    <button type="submit" className="btn btn-save me-2">
                       Save Attendance
                     </button>
-
                     <button
                       type="button"
                       className="btn btn-reset"
@@ -362,16 +321,12 @@ const Employ_attendance = () => {
           </div>
         </div>
 
-        {/* ================= ERROR ================= */}
-
+        {/* ERROR */}
         {error && (
-          <div className="alert alert-danger mt-3 text-center">
-            {error}
-          </div>
+          <div className="alert alert-danger mt-3 text-center">{error}</div>
         )}
 
-        {/* ================= ATTENDANCE LIST ================= */}
-
+        {/* ATTENDANCE LIST */}
         <div className="card mt-4">
           <div className="card-header">
             <h4>Attendance List</h4>
@@ -385,7 +340,10 @@ const Employ_attendance = () => {
                     <tr className="table-dark">
                       {[1, 2, 3, 4, 5, 6].map((n) => (
                         <th key={n}>
-                          <div className="skeleton-box" style={{ background: "#444" }}></div>
+                          <div
+                            className="skeleton-box"
+                            style={{ background: "#444" }}
+                          ></div>
                         </th>
                       ))}
                     </tr>
@@ -424,9 +382,7 @@ const Employ_attendance = () => {
                       <tr key={i.id}>
                         <td>{i.EmployId}</td>
                         <td>
-                          <div className="cell-scroll">
-                            {i.Employname}
-                          </div>
+                          <div className="cell-scroll">{i.Employname}</div>
                         </td>
                         <td>
                           <div className="cell-scroll">
@@ -434,9 +390,7 @@ const Employ_attendance = () => {
                           </div>
                         </td>
                         <td>
-                          <div className="cell-scroll">
-                            {i.Status}
-                          </div>
+                          <div className="cell-scroll">{i.Status}</div>
                         </td>
 
                         {/* EDIT */}
@@ -467,6 +421,106 @@ const Employ_attendance = () => {
           </div>
         </div>
       </div>
+
+
+
+
+{showQR && (
+        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Scan QR for Attendance</h5>
+                <button 
+                  type="button" 
+                  className="btn-close" 
+                  onClick={() => setShowQR(false)}
+                ></button>
+              </div>
+              <div className="modal-body text-center">
+                <p className="fw-bold">Employee ID: {formData.EmployId}</p>
+                
+                {/* 1. Static QR Code (Agar aapko screen se dusre phone se scan karwana ho) */}
+                <div className="mb-3 d-inline-block p-2 bg-light border">
+                  <QRCodeSVG 
+  value={`${API_URL}/mark-attendance/?EmployId=${formData.EmployId}&Date=${formData.Date}`} 
+  size={160} 
+/>
+<small className="text-muted d-block mt-3">
+  Mobile camera se scan karke link open karein, attendance automatic save ho jayegi!
+</small>
+                </div>
+
+                <hr />
+                <p className="text-muted small mb-2">Ya apna camera yahan focus karein:</p>
+
+                {/* 2. Live Camera Scanner */}
+                <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
+                  <QrReader
+                    constraints={{ facingMode: 'environment' }}
+                    onResult={async (result, error) => {
+                      if (result) {
+                        try {
+                          // Scan hone par data parse karein
+                          const scannedData = JSON.parse(result?.text);
+                          
+                          if (scannedData.EmployId) {
+                            // Automatic Attendance Save API Call
+                            const submissionData = {
+                              EmployId: scannedData.EmployId,
+                              Date: scannedData.Date || formData.Date,
+                              Status: "Present"
+                            };
+
+                            const response = await fetch(`${API_URL}/Employ_attendance/`, {
+                              method: "POST",
+                              headers: {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                                Accept: "application/json",
+                              },
+                              body: new URLSearchParams(submissionData),
+                            });
+
+                            if (response.ok) {
+                              alert(`Attendance Saved Successfully for ID: ${scannedData.EmployId}`);
+                              setShowQR(false); // Popup band ho jayega
+                              setFormData({
+                                EmployId: "",
+                                Date: new Date().toISOString().split("T")[0],
+                              });
+                              getAttendance(); // Table refresh ho jayegi
+                            }
+                          }
+                        } catch (err) {
+                          console.error("Invalid QR Code format", err);
+                        }
+                      }
+                      if (error) {
+                        // Scan error ko ignore kar sakte hain jab tak valid QR na mile
+                      }
+                    }}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  onClick={() => setShowQR(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
+
+      
     </>
   );
 };

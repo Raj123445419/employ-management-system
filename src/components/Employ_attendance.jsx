@@ -403,6 +403,8 @@ useEffect(() => {
                             className="form-control"
                             value={formData.Date}
                             onChange={handleChange}
+                            readOnly
+                            style={{ pointerEvents: "none", backgroundColor: "#e9ecef" }}
                             required
                           />
                         )}

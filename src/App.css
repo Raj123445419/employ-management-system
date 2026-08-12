@@ -612,3 +612,63 @@ body {
   background-color: #e5e7eb;
   border-color: #9ca3af;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   SKELETON LOADING ANIMATION STYLES
+   ===================================================== */
+.skeleton-box {
+  background: #e0e0e0;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  display: inline-block;
+  width: 100%;
+  min-height: 20px;
+}
+
+.skeleton-heading {
+  height: 35px;
+  width: 250px;
+  margin: 0 auto;
+}
+
+.skeleton-input-box {
+  height: 38px;
+  background: #e0e0e0;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  width: 100%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

@@ -1,6 +1,6 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import "../App.css";
 
 // =====================================================
 // DJANGO BACKEND URL
@@ -29,36 +29,38 @@ const Edite_Page = () => {
     Salary: employee?.Salary || ""
   });
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Page reload hone par skeleton effect dikhane ke liye
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // ================= INPUT CHANGE =================
 
   const handleChange = (e) => {
-
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
-
   };
 
   // ================= UPDATE EMPLOYEE =================
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     if (!employee?.EmployId) {
-
       alert("Employee ID not found");
-
       return;
     }
 
     setLoading(true);
 
     try {
-
       const response = await fetch(
         `${API_URL}/Edite/${employee.EmployId}/`,
         {
@@ -77,7 +79,6 @@ const Edite_Page = () => {
       );
 
       if (response.ok) {
-
         alert(
           "Employee Updated Successfully"
         );
@@ -86,7 +87,6 @@ const Edite_Page = () => {
         navigate("/");
 
       } else {
-
         const data =
           await response.json().catch(() => ({}));
 
@@ -94,11 +94,9 @@ const Edite_Page = () => {
           data.error ||
           "Employee Update Failed"
         );
-
       }
 
     } catch (error) {
-
       console.log(error);
 
       alert(
@@ -106,9 +104,7 @@ const Edite_Page = () => {
       );
 
     } finally {
-
       setLoading(false);
-
     }
 
   };
@@ -116,212 +112,186 @@ const Edite_Page = () => {
   // ================= EMPLOYEE DATA NOT FOUND =================
 
   if (!employee) {
-
     return (
-
       <div className="container mt-5">
-
         <div className="alert alert-danger text-center">
-
           Employee data not found.
-
           <br />
-
           <button
             className="btn btn-primary mt-3"
             onClick={() => navigate("/")}
           >
             Go To Employee List
           </button>
-
         </div>
-
       </div>
-
     );
-
   }
 
   return (
-
-    <div className="container">
-
+    <div className="container mt-5">
       <div className="row justify-content-center">
-
         <div className="col-md-8">
-
           <div className="card edit-employee-card">
 
             {/* ================= HEADER ================= */}
-
-            <div className="card-header edit-employee-header">
-
-              Edit Employee
-
+            <div className="card-header edit-employee-header text-center">
+              {loading ? (
+                <div className="skeleton-box skeleton-heading" style={{ margin: "0 auto", width: "180px", height: "25px" }}></div>
+              ) : (
+                <h3>Edit Employee</h3>
+              )}
             </div>
 
             {/* ================= BODY ================= */}
-
             <div className="card-body">
-
               <form onSubmit={handleSubmit}>
 
                 {/* ================= EMPLOYEE NAME ================= */}
-
                 <div className="mb-3">
-
                   <label className="form-label">
                     Employee Name
                   </label>
-
-                  <input
-                    type="text"
-                    name="Employname"
-                    className="form-control"
-                    value={formData.Employname}
-                    onChange={handleChange}
-                    required
-                  />
-
+                  {loading ? (
+                    <div className="skeleton-input-box"></div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="Employname"
+                      className="form-control"
+                      value={formData.Employname}
+                      onChange={handleChange}
+                      required
+                    />
+                  )}
                 </div>
 
                 {/* ================= ADDRESS ================= */}
-
                 <div className="mb-3">
-
                   <label className="form-label">
                     Address
                   </label>
-
-                  <textarea
-                    name="Address"
-                    className="form-control"
-                    rows="3"
-                    value={formData.Address}
-                    onChange={handleChange}
-                    required
-                  />
-
+                  {loading ? (
+                    <div className="skeleton-input-box" style={{ height: "70px" }}></div>
+                  ) : (
+                    <textarea
+                      name="Address"
+                      className="form-control"
+                      rows="3"
+                      value={formData.Address}
+                      onChange={handleChange}
+                      required
+                    />
+                  )}
                 </div>
 
                 {/* ================= EMPLOYEE ROLE ================= */}
-
                 <div className="mb-3">
-
                   <label className="form-label">
                     Employee Role
                   </label>
-
-                  <input
-                    type="text"
-                    name="Employrole"
-                    className="form-control"
-                    value={formData.Employrole}
-                    onChange={handleChange}
-                    required
-                  />
-
+                  {loading ? (
+                    <div className="skeleton-input-box"></div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="Employrole"
+                      className="form-control"
+                      value={formData.Employrole}
+                      onChange={handleChange}
+                      required
+                    />
+                  )}
                 </div>
 
                 {/* ================= DESIGNATION ================= */}
-
                 <div className="mb-3">
-
                   <label className="form-label">
                     Designation
                   </label>
-
-                  <input
-                    type="text"
-                    name="Designation"
-                    className="form-control"
-                    value={formData.Designation}
-                    onChange={handleChange}
-                    required
-                  />
-
+                  {loading ? (
+                    <div className="skeleton-input-box"></div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="Designation"
+                      className="form-control"
+                      value={formData.Designation}
+                      onChange={handleChange}
+                      required
+                    />
+                  )}
                 </div>
 
                 {/* ================= EXPERIENCE ================= */}
-
                 <div className="mb-3">
-
                   <label className="form-label">
                     Experience
                   </label>
-
-                  <input
-                    type="text"
-                    name="Experince"
-                    className="form-control"
-                    value={formData.Experince}
-                    onChange={handleChange}
-                    required
-                  />
-
+                  {loading ? (
+                    <div className="skeleton-input-box"></div>
+                  ) : (
+                    <input
+                      type="text"
+                      name="Experince"
+                      className="form-control"
+                      value={formData.Experince}
+                      onChange={handleChange}
+                      required
+                    />
+                  )}
                 </div>
 
                 {/* ================= SALARY ================= */}
-
                 <div className="mb-3">
-
                   <label className="form-label">
                     Salary
                   </label>
-
-                  <input
-                    type="number"
-                    name="Salary"
-                    className="form-control"
-                    value={formData.Salary}
-                    onChange={handleChange}
-                    required
-                  />
-
+                  {loading ? (
+                    <div className="skeleton-input-box"></div>
+                  ) : (
+                    <input
+                      type="number"
+                      name="Salary"
+                      className="form-control"
+                      value={formData.Salary}
+                      onChange={handleChange}
+                      required
+                    />
+                  )}
                 </div>
 
                 {/* ================= BUTTONS ================= */}
-
-                <div className="text-center">
-
+                <div className="text-center mt-4">
                   <button
                     type="submit"
-                    className="btn btn-success me-2"
+                    className="btn btn-success me-2 px-4"
                     disabled={loading}
                   >
-
                     {loading
                       ? "Updating..."
                       : "Update Employee"
                     }
-
                   </button>
 
                   <button
                     type="button"
-                    className="btn btn-secondary"
+                    className="btn btn-secondary px-4"
                     onClick={() => navigate("/")}
                   >
                     Cancel
                   </button>
-
                 </div>
 
               </form>
-
             </div>
 
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   );
 
 };
 
 export default Edite_Page;
-

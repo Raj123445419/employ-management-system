@@ -440,68 +440,15 @@ const Employ_attendance = () => {
               <div className="modal-body text-center">
                 <p className="fw-bold">Employee ID: {formData.EmployId}</p>
                 
-                {/* 1. Static QR Code (Agar aapko screen se dusre phone se scan karwana ho) */}
                 <div className="mb-3 d-inline-block p-2 bg-light border">
                   <QRCodeSVG 
-  value={`${API_URL}/mark-attendance/?EmployId=${formData.EmployId}&Date=${formData.Date}`} 
-  size={160} 
-/>
-<small className="text-muted d-block mt-3">
-  Mobile camera se scan karke link open karein, attendance automatic save ho jayegi!
-</small>
-                </div>
-
-                <hr />
-                <p className="text-muted small mb-2">Ya apna camera yahan focus karein:</p>
-
-                {/* 2. Live Camera Scanner */}
-                <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
-                  <QrReader
-                    constraints={{ facingMode: 'environment' }}
-                    onResult={async (result, error) => {
-                      if (result) {
-                        try {
-                          // Scan hone par data parse karein
-                          const scannedData = JSON.parse(result?.text);
-                          
-                          if (scannedData.EmployId) {
-                            // Automatic Attendance Save API Call
-                            const submissionData = {
-                              EmployId: scannedData.EmployId,
-                              Date: scannedData.Date || formData.Date,
-                              Status: "Present"
-                            };
-
-                            const response = await fetch(`${API_URL}/Employ_attendance/`, {
-                              method: "POST",
-                              headers: {
-                                "Content-Type": "application/x-www-form-urlencoded",
-                                Accept: "application/json",
-                              },
-                              body: new URLSearchParams(submissionData),
-                            });
-
-                            if (response.ok) {
-                              alert(`Attendance Saved Successfully for ID: ${scannedData.EmployId}`);
-                              setShowQR(false); // Popup band ho jayega
-                              setFormData({
-                                EmployId: "",
-                                Date: new Date().toISOString().split("T")[0],
-                              });
-                              getAttendance(); // Table refresh ho jayegi
-                            }
-                          }
-                        } catch (err) {
-                          console.error("Invalid QR Code format", err);
-                        }
-                      }
-                      if (error) {
-                        // Scan error ko ignore kar sakte hain jab tak valid QR na mile
-                      }
-                    }}
-                    style={{ width: '100%' }}
+                    value={`${API_URL}/mark-attendance/?EmployId=${formData.EmployId}&Date=${formData.Date}`} 
+                    size={160} 
                   />
                 </div>
+                <small className="text-muted d-block mt-3">
+                  Mobile camera se scan karke link open karein, attendance automatic save ho jayegi!
+                </small>
               </div>
               <div className="modal-footer">
                 <button 
@@ -516,7 +463,6 @@ const Employ_attendance = () => {
           </div>
         </div>
       )}
-
 
 
 

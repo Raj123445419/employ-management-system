@@ -255,7 +255,7 @@ useEffect(() => {
             // 10 second baad automatic message gayab karne ke liye
             setTimeout(() => {
               setNotification("");
-            }, 10000);
+            },5000);
             
             setFormData({
               EmployId: "",

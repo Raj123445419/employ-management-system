@@ -20,7 +20,7 @@ const API_URL = "https://backend-z4sf.onrender.com";
 // EDIT ATTENDANCE COMPONENT
 // =====================================================
 
-function Edite_attendence() {
+function Edite_attendance() {
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -298,4 +298,4 @@ function Edite_attendence() {
   );
 }
 
-export default Edite_attendence;
+export default Edite_attendance;

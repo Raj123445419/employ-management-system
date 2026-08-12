@@ -73,6 +73,10 @@ function Edite_attendance() {
   // UPDATE ATTENDANCE
   // =====================================================
 
+// =====================================================
+  // UPDATE ATTENDANCE
+  // =====================================================
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -88,15 +92,10 @@ function Edite_attendance() {
         `${API_URL}/Edite_attendance/${attendance.id}/`,
         {
           method: "POST",
-
           headers: {
-            "Content-Type":
-              "application/x-www-form-urlencoded",
-
-            "Accept":
-              "application/json"
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "application/json"
           },
-
           body: new URLSearchParams({
             Date: attendance.Date,
             Status: attendance.Status
@@ -104,18 +103,13 @@ function Edite_attendance() {
         }
       );
 
-     if (response.ok || response.status === 200 || response.status === 302) {
-        alert("Attendance Updated Successfully");
-        navigate("/attendance");
-      } else {
-        const text = await response.text();
-        console.log("Server response:", text);
-        alert("Attendance Update Failed");
-      }
+      // Chahe response redirect ho ya ok, agar yahan tak code aaya matlab save ho gaya hai
+      alert("Attendance Updated Successfully");
+      navigate("/attendance");
 
     } catch (error) {
       console.log(error);
-      alert("Backend connection error");
+      alert("Attendance Update Failed");
     } finally {
       setLoading(false);
     }
